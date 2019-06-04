@@ -12,24 +12,19 @@ import com.competition.pdking.ttmsbuytickets.R;
 
 /**
  * @author liupeidong
- * Created on 2019/6/4 14:17
+ * Created on 2019/6/4 14:51
  */
-public class MovieFragment extends Fragment {
+public class HadBuyTicketsFragment extends Fragment {
 
-    private static MovieFragment INSTANCE;
-
-    public static MovieFragment getINSTANCE() {
-        if (INSTANCE == null) {
-            INSTANCE = new MovieFragment();
-        }
-        return INSTANCE;
+    public static HadBuyTicketsFragment newInstance() {
+        return new HadBuyTicketsFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_movie_fragment,
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_had_buy_fragment,
                 container, false);
         return view;
     }

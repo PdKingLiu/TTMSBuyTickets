@@ -3,8 +3,13 @@ package com.competition.pdking.ttmsbuytickets;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,8 +21,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import com.competition.pdking.ttmsbuytickets.fragment.MovieFragment;
+import com.competition.pdking.ttmsbuytickets.fragment.OrderFragment;
+
+public class MainActivity extends AppCompatActivity {
+
+    private BottomNavigationView mBottomNavigationView;
+
+    private MovieFragment mMovieFragment;
+
+    private OrderFragment mOrderFragment;
+
+    private FragmentManager mFragmentManager;
+
+    private int bottomFlag = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,53 +47,89 @@ public class MainActivity extends AppCompatActivity
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        initView();
+        mFragmentManager = getSupportFragmentManager();
+        bottomNavigationViewListener();
+        initFragment();
     }
 
-    @Override
-    public void onBackPressed() {
+    private void initView() {
+        mBottomNavigationView = findViewById(R.id.bnv);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    private void initFragment() {
+        mMovieFragment = MovieFragment.getINSTANCE();
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.add(R.id.fl_main, mMovieFragment);
+        bottomFlag = R.id.bnv_movie;
+        mFragmentTransaction.commit();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    private void bottomNavigationViewListener() {
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView
+                .OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.bnv_movie:
+                        if (bottomFlag == R.id.bnv_movie) {
+                            break;
+                        }
+                        setFragmentPage(R.id.bnv_movie);
+                        bottomFlag = R.id.bnv_movie;
+                        break;
+                    case R.id.bnv_order:
+                        if (bottomFlag == R.id.bnv_order) {
+                            break;
+                        }
+                        setFragmentPage(R.id.bnv_order);
+                        bottomFlag = R.id.bnv_order;
+                        break;
+                }
+                return true;
+            }
+        });
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void setFragmentPage(int fragmentPage) {
+        hideFragmentPage();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        switch (fragmentPage) {
+            case R.id.bnv_movie:
+                if (mMovieFragment == null) {
+                    mMovieFragment = MovieFragment.getINSTANCE();
+                    fragmentTransaction.add(R.id.fl_main, mMovieFragment);
+                } else {
+                    fragmentTransaction.show(mMovieFragment);
+                }
+                break;
+            case R.id.bnv_order:
+                if (mOrderFragment == null) {
+                    mOrderFragment = OrderFragment.getINSTANCE();
+                    fragmentTransaction.add(R.id.fl_main, mOrderFragment);
+                } else {
+                    fragmentTransaction.show(mOrderFragment);
+                }
+                break;
         }
-
-        return super.onOptionsItemSelected(item);
+        fragmentTransaction.commit();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+    private void hideFragmentPage() {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        switch (bottomFlag) {
+            case R.id.bnv_movie:
+                if (mMovieFragment != null && !mMovieFragment.isHidden()) {
+                    fragmentTransaction.hide(mMovieFragment);
+                }
+                break;
+            case R.id.bnv_order:
+                if (mOrderFragment != null && !mOrderFragment.isHidden()) {
+                    fragmentTransaction.hide(mOrderFragment);
+                }
+                break;
         }
-        return true;
+        fragmentTransaction.commit();
     }
+
 }
