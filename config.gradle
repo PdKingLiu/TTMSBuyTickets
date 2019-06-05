@@ -1,6 +1,6 @@
 ext {
 
-    isApp = true
+    isApp = false
 
     android = [
             compileSdkVersion: 28,

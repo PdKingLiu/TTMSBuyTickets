@@ -18,8 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+
 import java.io.IOException;
 
+@Route(path = "/login_and_register_module/login_activity")
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btRegister;
@@ -114,14 +118,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_login:
-                startLogin();
-                break;
-            case R.id.bt_login_register:
-                break;
-            case R.id.bt_login_find_password:
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_login) {
+            startLogin();
+        } else if (i == R.id.bt_login_register) {
+            startActivity(new Intent(this, RegisterActivity.class));
+        } else if (i == R.id.bt_login_find_password) {
         }
     }
 
@@ -129,6 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void startLogin() {
         final String phone = edPhone.getText().toString();
         final String password = edPassword.getText().toString();
+        ARouter.getInstance().build("/theater_business_module/main_activity").navigation();
     }
 
     private void showToast(final String text) {
