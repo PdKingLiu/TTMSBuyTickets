@@ -47,6 +47,7 @@ dependencies {
     if (rootProject.ext.isApp) {
 //        引入base和common组件
     } else {
+        implementation project(":module_login_and_register")
         implementation project(":module_theater_business")
     }
 
