@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':module_login_and_register', ':module_theater_business'
