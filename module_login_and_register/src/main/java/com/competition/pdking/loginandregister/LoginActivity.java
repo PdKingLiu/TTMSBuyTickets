@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 
-import java.io.IOException;
 
 @Route(path = "/login_and_register_module/login_activity")
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {

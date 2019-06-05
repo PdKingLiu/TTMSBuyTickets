@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        ARouter.getInstance().inject(this);
         initView();
         mFragmentManager = getSupportFragmentManager();
         bottomNavigationViewListener();
@@ -60,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
         nv = findViewById(R.id.nv);
         ll = (LinearLayout) nv.getHeaderView(0);
         civ = ll.findViewById(R.id.civ_nav);
-        Glide.with(this).load(getResources().getDrawable(R.mipmap.icon_)).into(civ);
-        ll.setBackground(getResources().getDrawable(R.mipmap.background));
+        Glide.with(this).load(getResources().getDrawable(R.mipmap.user_icon)).into(civ);
+        ll.setBackground(getResources().getDrawable(R.drawable.shape_gradient_title));
         nv.getMenu().findItem(R.id.nav_exit).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
