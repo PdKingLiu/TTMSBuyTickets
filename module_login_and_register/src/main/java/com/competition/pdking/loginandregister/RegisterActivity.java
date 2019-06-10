@@ -10,19 +10,28 @@ import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.competition.pdking.common.weight.TitleView;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    LinearLayout linearLayout;
-    EditText editText;
+    private LinearLayout linearLayout;
+    private EditText editText;
+    private TitleView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        linearLayout = findViewById(R.id.ll_sum);
-        editText = findViewById(R.id.et_intro);
+        initView();
         addLayoutListener(linearLayout, editText);
         setBar();
+    }
+
+    private void initView() {
+        linearLayout = findViewById(R.id.ll_sum);
+        editText = findViewById(R.id.et_intro);
+        title = findViewById(R.id.title);
+        title.setLeftClickListener(() -> finish());
     }
 
     private void setBar() {
@@ -36,22 +45,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void addLayoutListener(final View main, final View scroll) {
-        main.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver
-                .OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect rect = new Rect();
-                scroll.getWindowVisibleDisplayFrame(rect);
-                int mainInvisibleHeight = scroll.getRootView().getHeight() - rect.bottom;
-                int screenHeight = scroll.getRootView().getHeight();
-                if (mainInvisibleHeight > screenHeight / 4) {
-                    int[] location = new int[2];
-                    scroll.getLocationInWindow(location);
-                    int srollHeight = (location[1] + scroll.getHeight()) - rect.bottom;
-                    main.scrollTo(0, srollHeight);
-                } else {
-                    main.scrollTo(0, 0);
-                }
+        main.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect rect = new Rect();
+            scroll.getWindowVisibleDisplayFrame(rect);
+            int mainInvisibleHeight = scroll.getRootView().getHeight() - rect.bottom;
+            int screenHeight = scroll.getRootView().getHeight();
+            if (mainInvisibleHeight > screenHeight / 4) {
+                int[] location = new int[2];
+                scroll.getLocationInWindow(location);
+                int srollHeight = (location[1] + scroll.getHeight()) - rect.bottom;
+                main.scrollTo(0, srollHeight);
+            } else {
+                main.scrollTo(0, 0);
             }
         });
     }

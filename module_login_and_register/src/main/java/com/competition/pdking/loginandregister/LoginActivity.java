@@ -123,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (i == R.id.bt_login_register) {
             startActivity(new Intent(this, RegisterActivity.class));
         } else if (i == R.id.bt_login_find_password) {
+            Toast.makeText(this, "暂未实现", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -134,32 +135,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showToast(final String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(LoginActivity.this, text, Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(LoginActivity.this, text, Toast.LENGTH_SHORT).show());
     }
 
     private void hideProgressBar() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog != null) {
-                    dialog.hide();
-                }
+        runOnUiThread(() -> {
+            if (dialog != null) {
+                dialog.hide();
             }
         });
     }
 
     private void showProgressBar() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog != null) {
-                    dialog.show();
-                }
+        runOnUiThread(() -> {
+            if (dialog != null) {
+                dialog.show();
             }
         });
     }

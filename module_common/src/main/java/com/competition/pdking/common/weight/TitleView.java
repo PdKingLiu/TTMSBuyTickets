@@ -67,20 +67,14 @@ public class TitleView extends RelativeLayout {
     }
 
     private void onButtonClick() {
-        layoutLeft.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (leftClickListener != null) {
-                    leftClickListener.OnLeftButtonClick();
-                }
+        layoutLeft.setOnClickListener(v -> {
+            if (leftClickListener != null) {
+                leftClickListener.OnLeftButtonClick();
             }
         });
-        layoutRight.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (rightClickListener != null) {
-                    rightClickListener.OnRightButtonClick();
-                }
+        layoutRight.setOnClickListener(v -> {
+            if (rightClickListener != null) {
+                rightClickListener.OnRightButtonClick();
             }
         });
 

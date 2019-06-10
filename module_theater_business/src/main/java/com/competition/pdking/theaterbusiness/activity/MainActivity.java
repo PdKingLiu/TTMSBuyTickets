@@ -61,12 +61,9 @@ public class MainActivity extends AppCompatActivity {
         civ = ll.findViewById(R.id.civ_nav);
         Glide.with(this).load(getResources().getDrawable(R.mipmap.user_icon)).into(civ);
         ll.setBackground(getResources().getDrawable(R.drawable.shape_gradient_title));
-        nv.getMenu().findItem(R.id.nav_exit).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                finish();
-                return true;
-            }
+        nv.getMenu().findItem(R.id.nav_exit).setOnMenuItemClickListener(item -> {
+            finish();
+            return true;
         });
     }
 
@@ -79,26 +76,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bottomNavigationViewListener() {
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView
-                .OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int i = menuItem.getItemId();
-                if (i == R.id.bnv_movie) {
-                    if (bottomFlag == R.id.bnv_movie) {
-                        return true;
-                    }
-                    setFragmentPage(R.id.bnv_movie);
-                    bottomFlag = R.id.bnv_movie;
-                } else if (i == R.id.bnv_order) {
-                    if (bottomFlag == R.id.bnv_order) {
-                        return true;
-                    }
-                    setFragmentPage(R.id.bnv_order);
-                    bottomFlag = R.id.bnv_order;
+        mBottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            int i = menuItem.getItemId();
+            if (i == R.id.bnv_movie) {
+                if (bottomFlag == R.id.bnv_movie) {
+                    return true;
                 }
-                return true;
+                setFragmentPage(R.id.bnv_movie);
+                bottomFlag = R.id.bnv_movie;
+            } else if (i == R.id.bnv_order) {
+                if (bottomFlag == R.id.bnv_order) {
+                    return true;
+                }
+                setFragmentPage(R.id.bnv_order);
+                bottomFlag = R.id.bnv_order;
             }
+            return true;
         });
     }
 
