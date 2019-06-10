@@ -1,4 +1,4 @@
-package com.competition.pdking.theaterbusiness.weight;
+package com.competition.pdking.common.weight;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,7 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.competition.pdking.theaterbusiness.R;
+import com.competition.pdking.common.R;
+
 
 /**
  * @author liupeidong

@@ -6,7 +6,7 @@
     android:background="#F8F8F8"
     android:orientation="vertical">
 
-    <com.competition.pdking.loginandregister.weight.TitleView
+    <com.competition.pdking.common.weight.TitleView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="70dp"

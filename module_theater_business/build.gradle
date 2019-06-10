@@ -52,13 +52,14 @@ dependencies {
 
     implementation rootProject.ext.dependencies.appcompat_v7
     implementation rootProject.ext.dependencies.design
-    implementation rootProject.ext.dependencies.constraint_layout
-
     implementation rootProject.ext.dependencies.circleimageview
     implementation rootProject.ext.dependencies.smartrefresh
     implementation rootProject.ext.dependencies.glide
     implementation rootProject.ext.dependencies.compressor
     implementation rootProject.ext.dependencies.arouter_api
+
+    implementation project(":module_common")
+
     annotationProcessor rootProject.ext.dependencies.arouter_compiler
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
