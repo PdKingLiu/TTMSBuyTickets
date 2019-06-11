@@ -13,7 +13,7 @@ public class ActivityContainer {
 
     private static List<Activity> list = new ArrayList<>();
 
-    public void add(Activity activity) {
+    public static void add(Activity activity) {
         if (list == null) {
             list = new ArrayList<>();
         }
@@ -22,7 +22,7 @@ public class ActivityContainer {
         }
     }
 
-    public void remove(Activity activity) {
+    public static void remove(Activity activity) {
         if (list == null) {
             list = new ArrayList<>();
             return;
@@ -31,7 +31,7 @@ public class ActivityContainer {
         list.remove(activity);
     }
 
-    private void removeAll() {
+    public static void removeAll() {
         if (list == null) {
             list = new ArrayList<>();
             return;

@@ -30,6 +30,7 @@
                 android:background="@drawable/view_shape">
 
                 <LinearLayout
+                    android:id="@+id/ll_user_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -101,6 +102,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:id="@+id/ed_input_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -127,6 +129,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:id="@+id/ed_re_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -225,7 +228,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/btn_refister_and_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"

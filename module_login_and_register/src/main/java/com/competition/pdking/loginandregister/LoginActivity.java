@@ -8,18 +8,29 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.competition.pdking.common.Constant;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 @Route(path = "/login_and_register_module/login_activity")
@@ -122,6 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startLogin();
         } else if (i == R.id.bt_login_register) {
             startActivity(new Intent(this, RegisterActivity.class));
+            ActivityContainer.add(this);
         } else if (i == R.id.bt_login_find_password) {
             Toast.makeText(this, "暂未实现", Toast.LENGTH_SHORT).show();
         }
@@ -131,7 +143,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void startLogin() {
         final String phone = edPhone.getText().toString();
         final String password = edPassword.getText().toString();
-        ARouter.getInstance().build("/theater_business_module/main_activity").navigation();
+        if (phone.equals("") || password.equals("")) {
+            Toast.makeText(this, "账号或密码有误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String url = ":8080/user_loginMobile?";
+        String u_name = "u_name=";
+        String u_password = "&u_password=";
+        showProgressBar();
+        new Handler().postDelayed(() -> {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(Constant.IP + url + u_name + phone + u_password + password)
+                    .build();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    hideProgressBar();
+                    showToast("网络错误");
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    hideProgressBar();
+                    String msg = response.body().string();
+                    try {
+                        int status = Integer.parseInt(msg);
+                        if (status == 10001) {
+                            ARouter.getInstance().build("/theater_business_module/main_activity").navigation();
+                            finish();
+                        } else if (status == 30013) {
+                            showToast("账号或密码有误");
+                        } else {
+                            showToast("未知错误");
+                        }
+                    } catch (Exception e) {
+                        showToast("未知异常");
+                    }
+                }
+            });
+        }, 1000);
     }
 
     private void showToast(final String text) {
@@ -175,5 +226,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void applyPermission() {
         ActivityCompat.requestPermissions(this, permissicns, 1);
     }
+
 
 }

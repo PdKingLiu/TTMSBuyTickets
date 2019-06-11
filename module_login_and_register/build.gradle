@@ -60,6 +60,7 @@ dependencies {
     implementation rootProject.ext.dependencies.design
     implementation rootProject.ext.dependencies.constraint_layout
     implementation rootProject.ext.dependencies.circleimageview
+    implementation rootProject.ext.dependencies.okhttp
 
     implementation project(":module_common")
 
