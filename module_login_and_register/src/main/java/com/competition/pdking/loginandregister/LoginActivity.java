@@ -198,7 +198,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             editor.putString("user_account", phone);
                             editor.putString("user_password", password);
                             editor.apply();
-                            ARouter.getInstance().build("/theater_business_module/main_activity").navigation();
+                            ARouter.getInstance().build("/theater_business_module/main_activity").withString("user",phone).navigation();
                             finish();
                         } else if (status == 30013) {
                             showToast("账号或密码有误");

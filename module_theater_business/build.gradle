@@ -63,6 +63,8 @@ dependencies {
     implementation rootProject.ext.dependencies.glide
     implementation rootProject.ext.dependencies.compressor
     implementation rootProject.ext.dependencies.arouter_api
+    implementation rootProject.ext.dependencies.okhttp
+    implementation rootProject.ext.dependencies.gson
 
     implementation project(":module_common")
 

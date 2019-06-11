@@ -15,14 +15,25 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.competition.pdking.common.Constant;
 import com.competition.pdking.theaterbusiness.R;
+import com.competition.pdking.theaterbusiness.bean.QueryUserBean;
 import com.competition.pdking.theaterbusiness.fragment.MovieFragment;
 import com.competition.pdking.theaterbusiness.fragment.OrderFragment;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @Route(path = "/theater_business_module/main_activity")
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvEmail;
     private int bottomFlag = -1;
 
+    @Autowired
+    String user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        ARouter.getInstance().inject(this);
         initView();
         mFragmentManager = getSupportFragmentManager();
         bottomNavigationViewListener();
@@ -93,6 +108,57 @@ public class MainActivity extends AppCompatActivity {
         nv.getMenu().findItem(R.id.nav_introduce).setOnMenuItemClickListener(item -> {
             mDrawerLayout.closeDrawers();
             return true;
+        });
+        initDrawer();
+    }
+
+    private void initDrawer() {
+        String url = ":8080/search_user?name=u_name&type=schu";
+        String value = "&value=";
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(Constant.IP + url
+                        + value + user)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String msg = response.body().string();
+                try {
+                    QueryUserBean bean = new Gson().fromJson(msg, QueryUserBean.class);
+                    setUserData(bean.rows.get(0));
+                } catch (Exception e) {
+
+                }
+                getApplication();
+            }
+        });
+    }
+
+    private void setUserData(QueryUserBean.RowsBean rowsBean) {
+        runOnUiThread(() -> {
+            tvName.setText("购票员");
+            if (rowsBean.uEmail.equals("")) {
+                tvEmail.setText("暂未设置邮箱");
+            } else {
+                tvEmail.setText(rowsBean.uEmail);
+            }
+            nv.getMenu().findItem(R.id.nav_account).setTitle(rowsBean.uName);
+            if (rowsBean.uAge.equals("")) {
+                nv.getMenu().findItem(R.id.nav_age).setTitle("暂未设置生日");
+            } else {
+                nv.getMenu().findItem(R.id.nav_age).setTitle(rowsBean.uAge);
+            }
+            if (rowsBean.uIntroduce.equals("")) {
+                nv.getMenu().findItem(R.id.nav_introduce).setTitle("暂未设置介绍");
+            } else {
+                nv.getMenu().findItem(R.id.nav_introduce).setTitle(rowsBean.uIntroduce);
+            }
         });
     }
 
