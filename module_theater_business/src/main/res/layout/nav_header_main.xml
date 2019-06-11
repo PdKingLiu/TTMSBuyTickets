@@ -20,6 +20,7 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing" />
 
     <TextView
+        android:id="@+id/tv_name"
         android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -31,7 +32,7 @@
     <TextView
         android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
-        android:id="@+id/textView"
+        android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="931942280@qq.com" />

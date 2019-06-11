@@ -6,9 +6,11 @@
     android:orientation="vertical">
 
     <com.competition.pdking.common.weight.TitleView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftIconVisibility="false"
+        app:leftIcon="@mipmap/icon_menu"
+        app:leftIconVisibility="true"
         app:leftTextVisibility="false"
         app:titleText="影院" >
     </com.competition.pdking.common.weight.TitleView>

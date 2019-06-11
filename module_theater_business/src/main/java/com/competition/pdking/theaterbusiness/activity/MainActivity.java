@@ -3,7 +3,6 @@ package com.competition.pdking.theaterbusiness.activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,9 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nv;
     private LinearLayout ll;
     private CircleImageView civ;
+    private TextView tvName;
+    private TextView tvEmail;
     private int bottomFlag = -1;
 
     @Override
@@ -53,16 +55,43 @@ public class MainActivity extends AppCompatActivity {
         initFragment();
     }
 
+    public void openDraw() {
+        if (mDrawerLayout != null) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+
     private void initView() {
         mBottomNavigationView = findViewById(R.id.bnv);
         mDrawerLayout = findViewById(R.id.dl);
         nv = findViewById(R.id.nv);
         ll = (LinearLayout) nv.getHeaderView(0);
         civ = ll.findViewById(R.id.civ_nav);
+        tvName = ll.findViewById(R.id.tv_name);
+        tvEmail = ll.findViewById(R.id.tv_email);
+        Log.d("Lpp", "initView: " + tvName + tvEmail);
         Glide.with(this).load(getResources().getDrawable(R.mipmap.user_icon)).into(civ);
         ll.setBackground(getResources().getDrawable(R.drawable.shape_gradient_title));
         nv.getMenu().findItem(R.id.nav_exit).setOnMenuItemClickListener(item -> {
             finish();
+            return true;
+        });
+        nv.getMenu().findItem(R.id.nav_exit_account).setOnMenuItemClickListener(item -> {
+            ARouter.getInstance().build("/login_and_register_module/login_activity").withString(
+                    "is_from_main_exit", "true").navigation(MainActivity.this);
+            finish();
+            return true;
+        });
+        nv.getMenu().findItem(R.id.nav_account).setOnMenuItemClickListener(item -> {
+            mDrawerLayout.closeDrawers();
+            return true;
+        });
+        nv.getMenu().findItem(R.id.nav_age).setOnMenuItemClickListener(item -> {
+            mDrawerLayout.closeDrawers();
+            return true;
+        });
+        nv.getMenu().findItem(R.id.nav_introduce).setOnMenuItemClickListener(item -> {
+            mDrawerLayout.closeDrawers();
             return true;
         });
     }

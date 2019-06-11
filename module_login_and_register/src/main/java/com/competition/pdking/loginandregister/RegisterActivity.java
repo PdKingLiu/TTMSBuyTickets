@@ -1,6 +1,7 @@
 package com.competition.pdking.loginandregister;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
@@ -192,6 +193,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     int status = Integer.parseInt(msg);
                     if (status == 100) {
                         showToast("注册成功");
+                        SharedPreferences.Editor editor =
+                                RegisterActivity.this.getSharedPreferences("user_data",
+                                        MODE_PRIVATE).edit();
+                        editor.clear();
+                        editor.putString("user_account", Account);
+                        editor.putString("user_password", Password);
+                        editor.apply();
                         ARouter.getInstance().build("/theater_business_module/main_activity").navigation();
                         finish();
                         ActivityContainer.removeAll();

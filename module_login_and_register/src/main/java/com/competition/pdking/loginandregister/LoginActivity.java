@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,11 +16,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.competition.pdking.common.Constant;
@@ -46,6 +47,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AlertDialog dia;
     private boolean[] flag = {false, false};
 
+    @Autowired
+    String is_from_main_exit;
+
     private String[] permissicns = new
             String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -56,12 +60,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         initView();
         setBar();
+        ARouter.getInstance().inject(this);
         dialog = new ProgressDialog(this);
         dialog.setMessage("正在登录...");
         dialog.setTitle("登录中");
         dialog.setCancelable(false);
         if (!checkPermission()) {
             applyPermission();
+        }
+        autoLogin();
+    }
+
+    private void autoLogin() {
+        SharedPreferences sharedPreferences = getSharedPreferences("user_data", MODE_PRIVATE);
+        String account = sharedPreferences.getString("user_account", "null");
+        String password = sharedPreferences.getString("user_password", "null");
+        if (account.equals("null") || password.equals("null")) {
+            return;
+        }
+        edPhone.setText(account);
+        edPassword.setText(password);
+        if (is_from_main_exit != null && is_from_main_exit.equals("true")) {
+        } else {
+            btLogin.callOnClick();
         }
     }
 
@@ -170,6 +191,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     try {
                         int status = Integer.parseInt(msg);
                         if (status == 10001) {
+                            SharedPreferences.Editor editor =
+                                    LoginActivity.this.getSharedPreferences("user_data",
+                                            MODE_PRIVATE).edit();
+                            editor.clear();
+                            editor.putString("user_account", phone);
+                            editor.putString("user_password", password);
+                            editor.apply();
                             ARouter.getInstance().build("/theater_business_module/main_activity").navigation();
                             finish();
                         } else if (status == 30013) {
