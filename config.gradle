@@ -22,6 +22,7 @@ ext {
             compressor       : 'id.zelory:compressor:2.1.0',
             okhttp           : 'com.squareup.okhttp3:okhttp:3.12.0',
             gson             : 'com.google.code.gson:gson:2.8.5',
+            smartrefresh     : 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20',
 
 
             arouter_api      : 'com.alibaba:arouter-api:1.5.0',
