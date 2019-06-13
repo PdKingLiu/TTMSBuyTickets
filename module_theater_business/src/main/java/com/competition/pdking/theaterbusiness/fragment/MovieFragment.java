@@ -1,5 +1,6 @@
 package com.competition.pdking.theaterbusiness.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.competition.pdking.common.Constant;
 import com.competition.pdking.common.weight.TitleView;
 import com.competition.pdking.theaterbusiness.R;
 import com.competition.pdking.theaterbusiness.activity.MainActivity;
+import com.competition.pdking.theaterbusiness.activity.MovieDetailsActivity;
 import com.competition.pdking.theaterbusiness.adapter.MovieListAdapter;
 import com.competition.pdking.theaterbusiness.bean.QueryMoiveListBean;
 import com.google.gson.Gson;
@@ -83,6 +85,11 @@ public class MovieFragment extends Fragment {
         list = new ArrayList<>();
         adapter = new MovieListAdapter(getActivity(), list);
         adapter.setListener((view, i) -> {
+            Intent intent = new Intent(getContext(), MovieDetailsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user", list.get(i));
+            intent.putExtra("user", bundle);
+            startActivity(intent);
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

@@ -23,7 +23,7 @@ ext {
             okhttp           : 'com.squareup.okhttp3:okhttp:3.12.0',
             gson             : 'com.google.code.gson:gson:2.8.5',
             smartrefresh     : 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-20',
-
+            wasabeef         : 'jp.wasabeef:glide-transformations:4.0.1',
 
             arouter_api      : 'com.alibaba:arouter-api:1.5.0',
             arouter_compiler : 'com.alibaba:arouter-compiler:1.2.2'

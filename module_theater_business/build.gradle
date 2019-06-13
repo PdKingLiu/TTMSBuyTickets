@@ -65,6 +65,7 @@ dependencies {
     implementation rootProject.ext.dependencies.arouter_api
     implementation rootProject.ext.dependencies.okhttp
     implementation rootProject.ext.dependencies.gson
+    implementation rootProject.ext.dependencies.wasabeef
 
     implementation project(":module_common")
 

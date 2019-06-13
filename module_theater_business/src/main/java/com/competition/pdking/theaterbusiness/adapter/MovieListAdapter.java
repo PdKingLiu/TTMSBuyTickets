@@ -39,14 +39,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_movie_list,
                 viewGroup, false);
-        view.setTag(i);
         view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.setData(arrayList.get(i));
+        viewHolder.setData(arrayList.get(i),i);
     }
 
     @Override
@@ -72,9 +71,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         TextView tvRed;
         TextView tvNoRed;
         TextView tvKind;
+        View view;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            view = itemView;
             ivIcon = itemView.findViewById(R.id.iv_movie);
             ivRed = itemView.findViewById(R.id.iv_red);
             tvName = itemView.findViewById(R.id.tv_name);
@@ -86,7 +87,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             tvKind = itemView.findViewById(R.id.tv_kind);
         }
 
-        public void setData(QueryMoiveListBean.RowsBean rowsBean) {
+        public void setData(QueryMoiveListBean.RowsBean rowsBean, int i) {
+            view .setTag(i);
             if (!rowsBean.playImage.equals("")) {
                 Glide.with(context).load(rowsBean.playImage).into(ivIcon);
             }

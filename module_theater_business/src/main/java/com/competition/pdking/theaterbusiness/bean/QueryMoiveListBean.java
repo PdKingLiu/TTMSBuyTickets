@@ -2,6 +2,7 @@ package com.competition.pdking.theaterbusiness.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class QueryMoiveListBean {
     @SerializedName("rows")
     public List<RowsBean> rows;
 
-    public static class RowsBean {
+    public static class RowsBean  implements Serializable {
         @SerializedName("play_id")
         public int playId;
         @SerializedName("play_name")
