@@ -1,10 +1,13 @@
 package com.competition.pdking.theaterbusiness.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -12,14 +15,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.competition.pdking.common.Constant;
 import com.competition.pdking.common.utils.SystemUtil;
 import com.competition.pdking.common.weight.TitleView;
 import com.competition.pdking.theaterbusiness.R;
+import com.competition.pdking.theaterbusiness.adapter.MovieListAdapter;
+import com.competition.pdking.theaterbusiness.adapter.SessionListAdapter;
 import com.competition.pdking.theaterbusiness.bean.QueryMoiveListBean;
+import com.competition.pdking.theaterbusiness.bean.SessionBean;
+import com.google.gson.Gson;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
@@ -34,6 +50,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private TextView tvKind;
     private TextView tvPrice;
 
+    private RecyclerView recyclerView;
+    private SmartRefreshLayout refreshLayout;
+    private SessionListAdapter adapter;
+    private ArrayList<SessionBean> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +63,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
         bean = (QueryMoiveListBean.RowsBean) getIntent().getBundleExtra("user").getSerializable(
                 "user");
         initView();
+        initRecyclerAndRefresh();
         Glide.with(this).load(zoomImg())
                 .apply(bitmapTransform(new BlurTransformation(15, 3)))
                 .into(ivBackground);
+    }
+
+    private void initRecyclerAndRefresh() {
+        list = new ArrayList<>();
+        list.add(new SessionBean());
+        list.add(new SessionBean());
+        list.add(new SessionBean());
+        list.add(new SessionBean());
+        list.add(new SessionBean());
+        adapter = new SessionListAdapter(this, list);
+        adapter.setListener((view, i) -> {
+        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        refreshLayout.setEnableAutoLoadMore(false);
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> refreshLayout.finishLoadMoreWithNoMoreData());
+        refreshLayout.setOnRefreshListener(refreshLayout -> refreshLayout.finishRefresh(true));
     }
 
     public Bitmap zoomImg() {
@@ -65,8 +104,36 @@ public class MovieDetailsActivity extends AppCompatActivity {
         bm.recycle();
         return newBitmap;
     }
+    private void refresh() {
+        String url = ":8080/search_all_plays?page=1&rows=100";
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(Constant.IP + url)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                refreshLayout.finishRefresh(false);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String msg = response.body().string();
+                try {
+                    list.clear();
+                    refreshLayout.finishRefresh(true);
+                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                } catch (Exception e) {
+                    refreshLayout.finishRefresh(false);
+                }
+            }
+        });
+    }
+
 
     private void initView() {
+        recyclerView = findViewById(R.id.rv_session_list);
+        refreshLayout = findViewById(R.id.srl_flush);
         ivIcon = findViewById(R.id.iv_icon);
         if (!bean.playImage.equals("")) {
             Glide.with(this).load(bean.playImage).into(ivIcon);

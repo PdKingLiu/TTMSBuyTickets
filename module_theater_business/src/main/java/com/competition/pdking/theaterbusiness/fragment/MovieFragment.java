@@ -107,7 +107,6 @@ public class MovieFragment extends Fragment {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("Lpp", "onFailure: " + e.getMessage());
                 refreshLayout.finishRefresh(false);
             }
 
@@ -121,7 +120,6 @@ public class MovieFragment extends Fragment {
                     refreshLayout.finishRefresh(true);
                     getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
                 } catch (Exception e) {
-                    Log.d("Lpp", "onResponse: " + e.getMessage());
                     refreshLayout.finishRefresh(false);
                 }
             }
