@@ -86,7 +86,7 @@ public class OrderFragment extends Fragment {
         for (int i = 0; i < mTabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
             tab.setCustomView(R.layout.item_table_item);
-            if (i == 1) {
+            if (i == 0) {
                 tab.select();
                 tab.getCustomView().findViewById(R.id.tv_tab).setSelected(true);
                 ((TextView) tab.getCustomView().findViewById(R.id.tv_tab)).setTextSize(22);
