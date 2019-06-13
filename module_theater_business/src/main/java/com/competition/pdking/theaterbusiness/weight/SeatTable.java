@@ -516,9 +516,10 @@ public class SeatTable extends View {
         float checkedSeatBitmapX =
                 soldSeatBitmapY + seatSoldBitmap.getWidth() + spacing1 + txtWidth + spacing;
         tempMatrix.setScale(xScale1, yScale1);
-        tempMatrix.postTranslate(checkedSeatBitmapX, y);
+        tempMatrix.postTranslate(checkedSeatBitmapX, (headHeight - seatHeight) / 2);
         canvas.drawBitmap(checkedSeatBitmap, tempMatrix, headPaint);
         canvas.drawText("已选", checkedSeatBitmapX + spacing1 + seatWidth, txtY, headPaint);
+
 
         //绘制分割线
         headPaint.setStrokeWidth(1);
