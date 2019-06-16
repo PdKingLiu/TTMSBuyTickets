@@ -78,7 +78,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         list.add(new SessionBean());
         adapter = new SessionListAdapter(this, list);
         adapter.setListener((view, i) -> {
-            startActivity(new Intent(MovieDetailsActivity.this, ChooseTicketActivity.class));
+            Intent intent = new Intent(MovieDetailsActivity.this, ChooseTicketActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user", bean);
+            intent.putExtra("user", bundle);
+            startActivity(intent);
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

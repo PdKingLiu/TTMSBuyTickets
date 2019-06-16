@@ -6,6 +6,6 @@ package com.competition.pdking.common;
  */
 public class Constant {
 
-    public static String IP = "http://192.168.1.118";
+    public static String IP = "http://192.168.43.251";
 
 }

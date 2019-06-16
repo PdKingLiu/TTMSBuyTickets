@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.competition.pdking.theaterbusiness.R;
 import com.competition.pdking.theaterbusiness.activity.ChooseTicketActivity;
 import com.competition.pdking.theaterbusiness.activity.MovieDetailsActivity;
+import com.competition.pdking.theaterbusiness.activity.OrderDetailsActivity;
 import com.competition.pdking.theaterbusiness.adapter.OrderListAdapter;
 import com.competition.pdking.theaterbusiness.adapter.SessionListAdapter;
 import com.competition.pdking.theaterbusiness.bean.OrderBean;
@@ -70,6 +71,7 @@ public class HadBuyTicketsFragment extends Fragment {
         list.add(new OrderBean());
         adapter = new OrderListAdapter(getContext(), list,1);
         adapter.setListener((view, i) -> {
+            startActivity(new Intent(getContext(), OrderDetailsActivity.class));
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
